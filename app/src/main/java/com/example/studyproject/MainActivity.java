@@ -1,8 +1,6 @@
 package com.example.studyproject;
 
 import android.os.Bundle;
-import android.util.Log;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setFragmentMap();
         setFrameLayout(Objects.requireNonNull(fragmentMap.get("首页")));
-        Log.d("log", "onCreate: 123");
+
         binding.mainBottom.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
