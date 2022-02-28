@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home_iv"
+        android:icon="@drawable/sy"
+        android:title="首页" />
+
+    <item
+        android:id="@+id/gif_iv"
+        android:icon="@drawable/bqb"
+        android:title="表情包" />
+
+</menu>
