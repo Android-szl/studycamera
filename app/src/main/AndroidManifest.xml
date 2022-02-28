@@ -55,7 +55,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.studyproject.provider"
+            android:authorities="com.yechaoa.pictureselectordemo.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
