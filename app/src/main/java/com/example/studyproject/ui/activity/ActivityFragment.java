@@ -11,6 +11,7 @@ import com.example.studyproject.R;
 import com.example.studyproject.base.BaseActivity;
 import com.example.studyproject.databinding.ActivityFragmentBinding;
 import com.example.studyproject.ui.fragment.GifFragment;
+import com.example.studyproject.ui.fragment.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
