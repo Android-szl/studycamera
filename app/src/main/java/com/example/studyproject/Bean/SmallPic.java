@@ -21,4 +21,13 @@ public class SmallPic {
         this.url = url;
         return this;
     }
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 }

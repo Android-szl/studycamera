@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.studyproject.databinding.ActivityMainBinding;
 import com.example.studyproject.ui.fragment.GifFragment;
-import com.example.studyproject.ui.fragment.HomeFragment;
 import com.example.studyproject.util.ColorUtil;
 
 import java.util.HashMap;
