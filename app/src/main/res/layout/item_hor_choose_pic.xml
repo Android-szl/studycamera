@@ -4,6 +4,7 @@
     android:layout_gravity="center"
     android:layout_height="match_parent">
     <LinearLayout
+        android:id="@+id/linear"
         android:gravity="center"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"

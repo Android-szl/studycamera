@@ -1,7 +1,26 @@
 package com.example.studyproject.ui.fragment;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.ContentUris;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +31,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.studyproject.Bean.SmallPic;
+import com.example.studyproject.MainActivity;
 import com.example.studyproject.R;
 import com.example.studyproject.adapter.HorListview_Adapter;
 import com.example.studyproject.custom.HorizontalListView;
+import com.example.studyproject.custom.MultiTouchImageView;
+import com.example.studyproject.tools.Click;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.xml.transform.Result;
 
 
 /**
@@ -41,8 +71,9 @@ public class HomeFragment extends Fragment {
     private TextView tv6;
     private ArrayList<TextView> tvs = new ArrayList<>();
     private ArrayList<SmallPic> smallPics;
-    private TextView tv0;
-
+    private TextView tv0; private Uri uri;
+    private Context context=getContext();
+    private DisplayMetrics displayMetrics = new DisplayMetrics();
 //    @Override
 //    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 //        super.onViewCreated(view, savedInstanceState);
@@ -60,10 +91,264 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initView();
         setTV();
-        ArrayList<SmallPic> smallPics1 = addIma_GQ();
-        HorListview_Adapter adapter = new HorListview_Adapter(smallPics1, getActivity());
-        horListview.setAdapter(adapter);
+        setHorAdapter(addIma_GQ());
+        Log.d(TAG, "onViewCreated: "+addIma_GQ().size());
     }
+    private class zp implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId())
+            {
+                case R.id.bt_bj:
+                    startDialog(0);
+                    break;
+                case R.id.bt_pj:
+                    startDialog(1);
+                    break;
+            }
+        }
+    }
+
+    private void startDialog(int a) {
+        AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+        builder.setTitle("请选择")
+                .setNegativeButton("相册", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        UseAlbum(a);
+                    }
+                }).setPositiveButton("相机", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                UseCamera(a);
+            }
+        }).show();
+    }
+    public void UseAlbum(int a)
+    {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)//判断是否有这个权限
+        {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        } else {
+            openAlbum(a);
+        }
+    }
+
+
+
+    public void UseCamera(int a)
+    {
+        File file = new File(getActivity().getExternalCacheDir(), "test.jpg");//file(获取外部缓存目录.)
+        try {
+            if (file.exists()) {//如果路径存在,则删除file创建新file
+                file.delete();
+            }
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (Build.VERSION.SDK_INT >= 24) {//当SDK大于24时,
+            uri = FileProvider.getUriForFile(context, "com.wocus.wined.fileprovider", file);//
+        } else {
+            uri = Uri.fromFile(file);
+        }
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        Log.d(TAG, "UseCamera: "+intent.toString());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        if (a==0)
+        {
+            startActivityForResult(intent, 1);
+        }
+        else if (a==1)
+        {
+            startActivityForResult(intent, 2);
+        }
+    }
+    private void openAlbum(int a) {
+        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        intent.setType("image/*");
+        if (a==1)
+        {
+        startActivityForResult(intent, 3);
+        }
+        else if (a==0)
+        {
+            startActivityForResult(intent, 4);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                if (resultCode == getActivity().RESULT_OK) {
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(uri));
+                        ivChange.setImageBitmap(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case 2:
+                if (resultCode == getActivity().RESULT_OK) {
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(uri));
+                        AddIma2(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case 3:
+                if (resultCode == getActivity().RESULT_OK) {
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        handeImage(data,3);
+                    } else {
+                        handleImageBefor(data,3);
+                    }
+                }
+                break;
+            case 4:
+                if (resultCode == getActivity().RESULT_OK) {
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        handeImage(data,4);
+                    } else {
+                        handleImageBefor(data,4);
+                    }
+                }
+                break;
+        }
+    }
+    private void handeImage(Intent data,int a) {
+        String imagePath = null;
+        Uri uri2 = data.getData();
+        if (DocumentsContract.isDocumentUri(getActivity(), uri2)) {
+            String docid = DocumentsContract.getDocumentId(uri2);
+            if ("com.android.providers.media.documents".equals(uri2.getAuthority())) {
+                String id = docid.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android.providers.downloads.documents".equals(uri2.getAuthority())) {
+                Uri contenUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docid));
+                imagePath = getImagePath(contenUri, null);
+            }
+        } else if ("content".equalsIgnoreCase(uri2.getScheme())) {
+            imagePath = getImagePath(uri2, null);
+        } else if ("file".equalsIgnoreCase(uri2.getScheme())) {
+            imagePath = uri2.getPath();
+        }
+        if (a==3)
+        {
+        AddIma(imagePath);
+        }
+        else if (a==4)
+        {
+            AddIma3(imagePath);
+        }
+    }
+
+    private void handleImageBefor(Intent data,int a) {
+        Uri uri = data.getData();
+        String imagePath = getImagePath(uri, null);
+        if (a==3)
+        {
+            AddIma(imagePath);
+        }
+        else if (a==4)
+        {
+            AddIma3(imagePath);
+        }
+    }
+    public void AddIma(String path) {
+        MultiTouchImageView mtiv = new MultiTouchImageView(getActivity());
+        mtiv.setScaleType(ImageView.ScaleType.MATRIX);
+        mtiv.setLayoutParams(relative.getLayoutParams());
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        int src_w = bitmap.getWidth();
+        int src_h = bitmap.getHeight();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int new_w = (int) (displayMetrics.widthPixels * 0.8);
+        int new_h = (int) (displayMetrics.heightPixels * 0.8);
+        float scale_w = (((float) new_w / src_w));
+        float scale_h = (((float) new_h / src_h));
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale_w, scale_h);
+        Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, src_w, src_h, matrix, true);
+        mtiv.setImageBitmap(bitmap1);
+        relative.addView(mtiv);
+    }
+    public void AddIma2(Bitmap bitmap) {
+        MultiTouchImageView mtiv = new MultiTouchImageView(getActivity());
+        mtiv.setScaleType(ImageView.ScaleType.MATRIX);
+        mtiv.setLayoutParams(relative.getLayoutParams());
+        int src_w = bitmap.getWidth();
+        int src_h = bitmap.getHeight();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int new_w = (int) (displayMetrics.widthPixels * 0.8);
+        int new_h = (int) (displayMetrics.heightPixels * 0.8);
+        float scale_w = (((float) new_w / src_w));
+        float scale_h = (((float) new_h / src_h));
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale_w, scale_h);
+        Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, src_w, src_h, matrix, true);
+        mtiv.setImageBitmap(bitmap1);
+        relative.addView(mtiv);
+    }
+    public void AddIma3(String path) {
+        MultiTouchImageView mtiv = new MultiTouchImageView(getActivity());
+        mtiv.setScaleType(ImageView.ScaleType.MATRIX);
+        mtiv.setLayoutParams(relative.getLayoutParams());
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        int src_w = bitmap.getWidth();
+        int src_h = bitmap.getHeight();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int new_w = (int) (displayMetrics.widthPixels * 0.8);
+        int new_h = (int) (displayMetrics.heightPixels * 0.8);
+        float scale_w = (((float) new_w / src_w));
+        float scale_h = (((float) new_h / src_h));
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale_w, scale_h);
+        Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, src_w, src_h, matrix, true);
+        ivChange.setImageBitmap(bitmap1);
+    }
+    public void AddIma4(int url) {
+        MultiTouchImageView mtiv = new MultiTouchImageView(getActivity());
+        mtiv.setScaleType(ImageView.ScaleType.MATRIX);
+        mtiv.setLayoutParams(relative.getLayoutParams());
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),url);
+        Log.d(TAG, "AddIma4: "+bitmap.toString());
+        int src_w = bitmap.getWidth();
+        int src_h = bitmap.getHeight();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int new_w = (int) (displayMetrics.widthPixels * 0.8);
+        int new_h = (int) (displayMetrics.heightPixels * 0.8);
+        float scale_w = (((float) new_w / src_w));
+        float scale_h = (((float) new_h / src_h));
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale_w, scale_h);
+        Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, src_w, src_h, matrix, true);
+        mtiv.setImageBitmap(bitmap);
+        relative.addView(mtiv);
+    }
+    @SuppressLint("Range")
+    private String getImagePath(Uri uri, String selection) {
+        String path = null;
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
+
+
+
+
 
     public void setTV() {
         tvs.add(tv1);
@@ -76,6 +361,8 @@ public class HomeFragment extends Fragment {
         for (int i = 0; i < tvs.size(); i++) {
             tvs.get(i).setOnClickListener(new dj());
         }
+        btBj.setOnClickListener(new zp());
+        btPj.setOnClickListener(new zp());
     }
 
     public ArrayList<SmallPic> addIma_GQ() {
@@ -175,7 +462,7 @@ public class HomeFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.tv0:
-                    horListview.setAdapter(new HorListview_Adapter(addIma_GQ(), getContext()));
+                    setHorAdapter(smallPics);
                     select(6);
                     break;
                 case R.id.tv1:
@@ -220,8 +507,22 @@ public class HomeFragment extends Fragment {
                 sms.add(smallPics.get(i));
             }
         }
-        horListview.setAdapter(new HorListview_Adapter(sms, getContext()));
+        setHorAdapter(sms);
         }
+    }
+
+    private static final String TAG = "HomeFragment";
+    public void setHorAdapter(ArrayList<SmallPic> sms)
+    {
+        Log.d(TAG, "setHorAdapter: ===="+sms.size());
+        HorListview_Adapter adapter=new HorListview_Adapter(sms,getContext());
+        adapter.setClick(new Click() {
+            @Override
+            public void clicks(SmallPic pic) {
+                AddIma4(pic.getUrl());
+            }
+        });
+        horListview.setAdapter(adapter);
     }
 
     private void initView() {
