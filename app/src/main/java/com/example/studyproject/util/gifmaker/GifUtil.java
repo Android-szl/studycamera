@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Environment;
 
 import com.example.studyproject.R;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -20,7 +21,7 @@ import java.util.List;
  * @date 2022.02.28 11:15
  */
 public class GifUtil {
-    public String createGif(List<Bitmap> pics, String file_name, int delay, final Context context) {
+    public String createGif(List<LocalMedia> pics, String file_name, int delay, final Context context) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         AnimatedGifEncoder gifEncoder = new AnimatedGifEncoder();
         gifEncoder.start(baos);//start
@@ -31,14 +32,10 @@ public class GifUtil {
         //【注意1】开始生成gif的时候，是以第一张图片的尺寸生成gif图的大小，后面几张图片会基于第一张图片的尺寸进行裁切
         //所以要生成尺寸完全匹配的gif图的话，应先调整传入图片的尺寸，让其尺寸相同
         //【注意2】如果传入的单张图片太大的话会造成OOM，可在不损失图片清晰度先对图片进行质量压缩
-        if (pics.isEmpty()) {
-//            gifEncoder.addFrame(BitmapFactory.decodeResource(getResources(), R.mipmap.r2));
-//            gifEncoder.addFrame(BitmapFactory.decodeResource(getResources(), R.mipmap.r1));
-//            gifEncoder.addFrame(BitmapFactory.decodeResource(getResources(), R.mipmap.r3));
-        } else {
+        if (!pics.isEmpty()) {
             for (int i = 0; i < pics.size(); i++) {
-                // Bitmap localBitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(pics.get(i)), 512, 512);
-                gifEncoder.addFrame(pics.get(i));
+                Bitmap bitmap = BitmapFactory.decodeFile(pics.get(i).getPath());
+                gifEncoder.addFrame(bitmap);
 
             }
         }

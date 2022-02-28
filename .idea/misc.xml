@@ -3,15 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/drawable/et_shape_1.xml" value="0.156" />
         <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/activity_fragment.xml" value="0.16875" />
         <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/activity_spalsh.xml" value="0.16875" />
-        <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/gif_fragment.xml" value="0.109375" />
+        <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/dialog_item.xml" value="0.264" />
+        <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/gif_fragment.xml" value="0.2" />
         <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/home_fragment.xml" value="0.16875" />
+        <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/item_filter_image.xml" value="0.4" />
+        <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/layout_bottom_dialog.xml" value="0.23385416666666667" />
+        <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/photo_item.xml" value="0.152" />
         <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/title_head.xml" value="0.2312820512820513" />
         <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2312820512820513" />
-        <entry key="..\:/studycamera1/app/src/main/res/drawable/bg_yuanjiao.xml" value="0.175" />
-        <entry key="..\:/studycamera1/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.175" />
+        <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/menu/menu.xml" value="0.21979166666666666" />
       </map>
     </option>
   </component>

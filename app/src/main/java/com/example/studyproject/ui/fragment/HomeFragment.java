@@ -29,12 +29,6 @@ public class HomeFragment extends Fragment {
     private RelativeLayout relative;
     private HorizontalListView horListview;
 
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        binding.tv1.setText("");
-//    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

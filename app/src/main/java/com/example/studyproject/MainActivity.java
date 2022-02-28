@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.studyproject.databinding.ActivityMainBinding;
 import com.example.studyproject.ui.fragment.GifFragment;
 import com.example.studyproject.ui.fragment.HomeFragment;
+import com.example.studyproject.util.ColorUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        ColorUtil.initColor(this);
         verifyStoragePermissions(this);
         setFragmentMap();
         setFrameLayout(Objects.requireNonNull(fragmentMap.get("首页")));
@@ -49,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.WRITE_EXTERNAL_STORAGE"};
-
 
     public static void verifyStoragePermissions(Activity activity) {
         try {
