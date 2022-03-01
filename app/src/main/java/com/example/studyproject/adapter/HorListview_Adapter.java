@@ -63,12 +63,6 @@ public class HorListview_Adapter extends BaseAdapter {
         }
         viewHolder.imageView.setImageResource(smallPics.get(position).getUrl());
         viewHolder.tv.setText(smallPics.get(position).getName());
-        viewHolder.linear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                click.clicks(smallPics.get(position));
-            }
-        });
         return convertView;
     }
     public class ViewHolder

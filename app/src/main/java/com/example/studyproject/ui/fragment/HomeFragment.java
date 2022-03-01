@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +16,7 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
@@ -24,10 +24,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,19 +40,17 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.studyproject.Bean.SmallPic;
-import com.example.studyproject.MainActivity;
 import com.example.studyproject.R;
 import com.example.studyproject.adapter.HorListview_Adapter;
 import com.example.studyproject.custom.HorizontalListView;
 import com.example.studyproject.custom.MultiTouchImageView;
-import com.example.studyproject.tools.Click;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
-
-import javax.xml.transform.Result;
 
 
 /**
@@ -71,9 +72,18 @@ public class HomeFragment extends Fragment {
     private TextView tv6;
     private ArrayList<TextView> tvs = new ArrayList<>();
     private ArrayList<SmallPic> smallPics;
-    private TextView tv0; private Uri uri;
-    private Context context=getContext();
+    private TextView tv0;
+    private Uri uri;
+    private Context context = getContext();
     private DisplayMetrics displayMetrics = new DisplayMetrics();
+    private ArrayList<MultiTouchImageView> mtivs = new ArrayList<>();
+    private LinearLayout titleToolbar;
+    private TextView titleTv;
+    private ImageButton btDelete;
+    private ImageButton btSave;
+    private TextView tvLine;
+    private TextView tvLine2;
+    private RelativeLayout rl;
 //    @Override
 //    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 //        super.onViewCreated(view, savedInstanceState);
@@ -92,14 +102,20 @@ public class HomeFragment extends Fragment {
         initView();
         setTV();
         setHorAdapter(addIma_GQ());
-        Log.d(TAG, "onViewCreated: "+addIma_GQ().size());
+        titleTv.setText("表情包制作");
+        Log.d(TAG, "onViewCreated: " + addIma_GQ().size());
+        btSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                screenShort();
+            }
+        });
     }
-    private class zp implements View.OnClickListener
-    {
+
+    private class zp implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            switch (v.getId())
-            {
+            switch (v.getId()) {
                 case R.id.bt_bj:
                     startDialog(0);
                     break;
@@ -111,7 +127,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void startDialog(int a) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("请选择")
                 .setNegativeButton("相册", new DialogInterface.OnClickListener() {
                     @Override
@@ -125,8 +141,8 @@ public class HomeFragment extends Fragment {
             }
         }).show();
     }
-    public void UseAlbum(int a)
-    {
+
+    public void UseAlbum(int a) {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)//判断是否有这个权限
         {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
@@ -136,9 +152,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-
-    public void UseCamera(int a)
-    {
+    public void UseCamera(int a) {
         File file = new File(getActivity().getExternalCacheDir(), "test.jpg");//file(获取外部缓存目录.)
         try {
             if (file.exists()) {//如果路径存在,则删除file创建新file
@@ -154,26 +168,21 @@ public class HomeFragment extends Fragment {
             uri = Uri.fromFile(file);
         }
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        Log.d(TAG, "UseCamera: "+intent.toString());
+        Log.d(TAG, "UseCamera: " + intent.toString());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        if (a==0)
-        {
+        if (a == 0) {
             startActivityForResult(intent, 1);
-        }
-        else if (a==1)
-        {
+        } else if (a == 1) {
             startActivityForResult(intent, 2);
         }
     }
+
     private void openAlbum(int a) {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("image/*");
-        if (a==1)
-        {
-        startActivityForResult(intent, 3);
-        }
-        else if (a==0)
-        {
+        if (a == 1) {
+            startActivityForResult(intent, 3);
+        } else if (a == 0) {
             startActivityForResult(intent, 4);
         }
     }
@@ -205,24 +214,25 @@ public class HomeFragment extends Fragment {
             case 3:
                 if (resultCode == getActivity().RESULT_OK) {
                     if (Build.VERSION.SDK_INT >= 19) {
-                        handeImage(data,3);
+                        handeImage(data, 3);
                     } else {
-                        handleImageBefor(data,3);
+                        handleImageBefor(data, 3);
                     }
                 }
                 break;
             case 4:
                 if (resultCode == getActivity().RESULT_OK) {
                     if (Build.VERSION.SDK_INT >= 19) {
-                        handeImage(data,4);
+                        handeImage(data, 4);
                     } else {
-                        handleImageBefor(data,4);
+                        handleImageBefor(data, 4);
                     }
                 }
                 break;
         }
     }
-    private void handeImage(Intent data,int a) {
+
+    private void handeImage(Intent data, int a) {
         String imagePath = null;
         Uri uri2 = data.getData();
         if (DocumentsContract.isDocumentUri(getActivity(), uri2)) {
@@ -240,28 +250,23 @@ public class HomeFragment extends Fragment {
         } else if ("file".equalsIgnoreCase(uri2.getScheme())) {
             imagePath = uri2.getPath();
         }
-        if (a==3)
-        {
-        AddIma(imagePath);
-        }
-        else if (a==4)
-        {
+        if (a == 3) {
+            AddIma(imagePath);
+        } else if (a == 4) {
             AddIma3(imagePath);
         }
     }
 
-    private void handleImageBefor(Intent data,int a) {
+    private void handleImageBefor(Intent data, int a) {
         Uri uri = data.getData();
         String imagePath = getImagePath(uri, null);
-        if (a==3)
-        {
+        if (a == 3) {
             AddIma(imagePath);
-        }
-        else if (a==4)
-        {
+        } else if (a == 4) {
             AddIma3(imagePath);
         }
     }
+
     public void AddIma(String path) {
         MultiTouchImageView mtiv = new MultiTouchImageView(getActivity());
         mtiv.setScaleType(ImageView.ScaleType.MATRIX);
@@ -279,7 +284,9 @@ public class HomeFragment extends Fragment {
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, src_w, src_h, matrix, true);
         mtiv.setImageBitmap(bitmap1);
         relative.addView(mtiv);
+        mtivs.add(mtiv);
     }
+
     public void AddIma2(Bitmap bitmap) {
         MultiTouchImageView mtiv = new MultiTouchImageView(getActivity());
         mtiv.setScaleType(ImageView.ScaleType.MATRIX);
@@ -296,7 +303,9 @@ public class HomeFragment extends Fragment {
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, src_w, src_h, matrix, true);
         mtiv.setImageBitmap(bitmap1);
         relative.addView(mtiv);
+        mtivs.add(mtiv);
     }
+
     public void AddIma3(String path) {
         MultiTouchImageView mtiv = new MultiTouchImageView(getActivity());
         mtiv.setScaleType(ImageView.ScaleType.MATRIX);
@@ -314,12 +323,13 @@ public class HomeFragment extends Fragment {
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, src_w, src_h, matrix, true);
         ivChange.setImageBitmap(bitmap1);
     }
+
     public void AddIma4(int url) {
         MultiTouchImageView mtiv = new MultiTouchImageView(getActivity());
         mtiv.setScaleType(ImageView.ScaleType.MATRIX);
         mtiv.setLayoutParams(relative.getLayoutParams());
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),url);
-        Log.d(TAG, "AddIma4: "+bitmap.toString());
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), url);
+        Log.d(TAG, "AddIma4: " + bitmap.toString());
         int src_w = bitmap.getWidth();
         int src_h = bitmap.getHeight();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -332,7 +342,9 @@ public class HomeFragment extends Fragment {
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, src_w, src_h, matrix, true);
         mtiv.setImageBitmap(bitmap);
         relative.addView(mtiv);
+        mtivs.add(mtiv);
     }
+
     @SuppressLint("Range")
     private String getImagePath(Uri uri, String selection) {
         String path = null;
@@ -346,8 +358,44 @@ public class HomeFragment extends Fragment {
         return path;
     }
 
+    public void screenShort() {
+        View dView = getActivity().getWindow().getDecorView();
+        dView.setDrawingCacheEnabled(true);
+        dView.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(dView.getDrawingCache());
+        int src_w = bitmap.getWidth();
+        int src_h = bitmap.getHeight();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int new_w = (int) (displayMetrics.widthPixels * 0.8);
+        int new_h = (int) (displayMetrics.heightPixels * 0.8);
+        float scale_w = (((float) new_w / src_w));
+        float scale_h = (((float) new_h / src_h));
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale_w, scale_h);
+        Log.d(TAG, "screenShort: " + (+tvLine.getY()) + "iv" + titleTv.getY());
 
+        Bitmap bitmap1 = Bitmap.createBitmap(bitmap, (int) (tvLine.getX()), (int) (tvLine.getY()+tvLine.getY()+35), ivChange.getWidth(), ivChange.getHeight()-35, matrix, true);
+        if (bitmap != null) {
+            try {
+                saveBitmap(bitmap1);
+            } catch (Exception e) {
+            }
+        }
+    }
 
+    private void saveBitmap(Bitmap bmp) throws IOException {
+        File childFolder = Environment.getExternalStoragePublicDirectory(Environment
+                .DIRECTORY_PICTURES);
+        File imageFile = new File(childFolder.getAbsolutePath() + "/" + System.currentTimeMillis
+                () + ".jpg");
+        OutputStream fOut = new FileOutputStream(imageFile);
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, fOut);//将bg输出至文件
+        fOut.flush();
+        fOut.close(); // do not forget to close the stream
+        getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile
+                (imageFile)));
+        Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
+    }
 
 
     public void setTV() {
@@ -490,36 +538,33 @@ public class HomeFragment extends Fragment {
     public void select(int x) {
         for (int i = 0; i < tvs.size(); i++) {
             if (x == i) {
-                tvs.get(i).setBackgroundColor(Color.parseColor("#00ff00"));
+                tvs.get(i).setBackgroundColor(Color.parseColor("#8ECF8E"));
             } else {
                 tvs.get(i).setBackgroundColor(Color.parseColor("#00000000"));
             }
         }
-        if (x==6)
-        {
+        if (x == 6) {
 
-        }
-        else
-        {
-        ArrayList<SmallPic> sms = new ArrayList<>();
-        for (int i = 0; i < smallPics.size(); i++) {
-            if (x == smallPics.get(i).getType()) {
-                sms.add(smallPics.get(i));
+        } else {
+            ArrayList<SmallPic> sms = new ArrayList<>();
+            for (int i = 0; i < smallPics.size(); i++) {
+                if (x == smallPics.get(i).getType()) {
+                    sms.add(smallPics.get(i));
+                }
             }
-        }
-        setHorAdapter(sms);
+            setHorAdapter(sms);
         }
     }
 
     private static final String TAG = "HomeFragment";
-    public void setHorAdapter(ArrayList<SmallPic> sms)
-    {
-        Log.d(TAG, "setHorAdapter: ===="+sms.size());
-        HorListview_Adapter adapter=new HorListview_Adapter(sms,getContext());
-        adapter.setClick(new Click() {
+
+    public void setHorAdapter(ArrayList<SmallPic> sms) {
+        Log.d(TAG, "setHorAdapter: ====" + sms.size());
+        HorListview_Adapter adapter = new HorListview_Adapter(sms, getContext());
+        horListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void clicks(SmallPic pic) {
-                AddIma4(pic.getUrl());
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AddIma4(sms.get(position).getUrl());
             }
         });
         horListview.setAdapter(adapter);
@@ -538,5 +583,12 @@ public class HomeFragment extends Fragment {
         tv5 = (TextView) getView().findViewById(R.id.tv5);
         tv6 = (TextView) getView().findViewById(R.id.tv6);
         tv0 = (TextView) getView().findViewById(R.id.tv0);
+        titleToolbar = (LinearLayout) getView().findViewById(R.id.title_toolbar);
+        titleTv = (TextView) getView().findViewById(R.id.title_tv);
+        btDelete = (ImageButton) getView().findViewById(R.id.bt_delete);
+        btSave = (ImageButton) getView().findViewById(R.id.bt_save);
+        tvLine = (TextView) getView().findViewById(R.id.tv_line);
+        tvLine2 = (TextView) getView().findViewById(R.id.tv_line2);
+        rl = (RelativeLayout) getView().findViewById(R.id.rl);
     }
 }

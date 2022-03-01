@@ -6,14 +6,19 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
+import com.example.studyproject.R;
+
 public class MultiTouchImageView extends AppCompatImageView {
+    private ImageView cancel;
     private float startDis;
     private PointF midPoint;//中点
     private float oldRotation=0;//旋转前
@@ -38,6 +43,11 @@ public class MultiTouchImageView extends AppCompatImageView {
 
     public MultiTouchImageView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+    }
+    public MultiTouchImageView(@NonNull Context context, @Nullable AttributeSet attrs,int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        View inflate = LayoutInflater.from(context).inflate(R.layout.lay_multi_image,null);
+        cancel = inflate.findViewById(R.id.cancel);
     }
     private enum MODE{
         NONE,DRAG,ZOOM //三种模式

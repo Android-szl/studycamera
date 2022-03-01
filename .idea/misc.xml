@@ -9,6 +9,8 @@
         <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/home_fragment.xml" value="0.16875" />
         <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/layout/title_head.xml" value="0.2312820512820513" />
         <entry key="..\:/KotlinProject/AndroidKotlin/StudyProject/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2312820512820513" />
+        <entry key="..\:/studycamera/app/src/main/res/drawable/bg_cirle.xml" value="0.1345" />
+        <entry key="..\:/studycamera/app/src/main/res/drawable/bg_mult_image.xml" value="0.1345" />
         <entry key="..\:/studycamera/app/src/main/res/drawable/bg_underline.xml" value="0.1415" />
         <entry key="..\:/studycamera/app/src/main/res/drawable/bg_underline_2_rad.xml" value="0.1415" />
         <entry key="..\:/studycamera/app/src/main/res/drawable/bg_yuanjia.xml" value="0.1725" />
@@ -22,8 +24,10 @@
         <entry key="..\:/studycamera/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/studycamera/app/src/main/res/layout/home_fragment.xml" value="0.2" />
         <entry key="..\:/studycamera/app/src/main/res/layout/item_hor_choose_pic.xml" value="0.1839080459770115" />
+        <entry key="..\:/studycamera/app/src/main/res/layout/lay_multi_image.xml" value="0.1765625" />
         <entry key="..\:/studycamera/app/src/main/res/layout/title_head.xml" value="0.23802083333333332" />
         <entry key="..\:/studycamera/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25364583333333335" />
+        <entry key="..\:/studycamera/app/src/main/res/menu/menu.xml" value="0.22083333333333333" />
         <entry key="..\:/studycamera/app/src/main/res/menu/pics_nav_menu.xml" value="0.25364583333333335" />
         <entry key="..\:/studycamera/app/src/main/res/xml/bg_yuanjiao.xml" value="0.25364583333333335" />
         <entry key="..\:/studycamera/app/src/main/res/xml/file_paths.xml" value="0.25364583333333335" />
