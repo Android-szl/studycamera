@@ -53,6 +53,44 @@ public class HomeFragment extends Fragment {
     public void addIma_GQ()
     {
         ArrayList<SmallPic> smallPics=new ArrayList<>();
+        smallPics.add(new SmallPic().setName("小表情1").setUrl(R.drawable.a10));
+        smallPics.add(new SmallPic().setName("小表情2").setUrl(R.drawable.a11));
+        smallPics.add(new SmallPic().setName("小表情3").setUrl(R.drawable.a12));
+        smallPics.add(new SmallPic().setName("小表情4").setUrl(R.drawable.a13));
+        smallPics.add(new SmallPic().setName("小表情5").setUrl(R.drawable.a14));
+        smallPics.add(new SmallPic().setName("小表情6").setUrl(R.drawable.a15));
+        smallPics.add(new SmallPic().setName("小表情7").setUrl(R.drawable.a16));
+        smallPics.add(new SmallPic().setName("小表情8").setUrl(R.drawable.a17));
+        smallPics.add(new SmallPic().setName("小表情9").setUrl(R.drawable.a18));
+        smallPics.add(new SmallPic().setName("小表情10").setUrl(R.drawable.a19));
+        smallPics.add(new SmallPic().setName("小表情11").setUrl(R.drawable.a20));
+        smallPics.add(new SmallPic().setName("小表情12").setUrl(R.drawable.a21));
+        smallPics.add(new SmallPic().setName("小表情13").setUrl(R.drawable.a22));
+        smallPics.add(new SmallPic().setName("小表情14").setUrl(R.drawable.a23));
+        smallPics.add(new SmallPic().setName("小表情15").setUrl(R.drawable.a24));
+        smallPics.add(new SmallPic().setName("小表情16").setUrl(R.drawable.a25));
+        smallPics.add(new SmallPic().setName("小表情17").setUrl(R.drawable.a26));
+        smallPics.add(new SmallPic().setName("小表情18").setUrl(R.drawable.a38));
+        smallPics.add(new SmallPic().setName("小表情19").setUrl(R.drawable.a27));
+        smallPics.add(new SmallPic().setName("小表情20").setUrl(R.drawable.a28));
+        smallPics.add(new SmallPic().setName("小表情21").setUrl(R.drawable.a29));
+        smallPics.add(new SmallPic().setName("小表情22").setUrl(R.drawable.a30));
+        smallPics.add(new SmallPic().setName("小表情23").setUrl(R.drawable.a31));
+        smallPics.add(new SmallPic().setName("小表情24").setUrl(R.drawable.a32));
+        smallPics.add(new SmallPic().setName("小表情25").setUrl(R.drawable.a33));
+        smallPics.add(new SmallPic().setName("小表情26").setUrl(R.drawable.a34));
+        smallPics.add(new SmallPic().setName("小表情27").setUrl(R.drawable.a35));
+        smallPics.add(new SmallPic().setName("小表情28").setUrl(R.drawable.a36));
+        smallPics.add(new SmallPic().setName("小表情29").setUrl(R.drawable.a37));
+        smallPics.add(new SmallPic().setName("小表情30").setUrl(R.drawable.a39));
+        smallPics.add(new SmallPic().setName("小表情31").setUrl(R.drawable.a4));
+        smallPics.add(new SmallPic().setName("小表情32").setUrl(R.drawable.a5));
+        smallPics.add(new SmallPic().setName("小表情33").setUrl(R.drawable.a6));
+        smallPics.add(new SmallPic().setName("小表情34").setUrl(R.drawable.a7));
+        smallPics.add(new SmallPic().setName("小表情35").setUrl(R.drawable.a8));
+        smallPics.add(new SmallPic().setName("小表情36").setUrl(R.drawable.a9));
+
+
         smallPics.add(new SmallPic().setName("表情1").setUrl(R.drawable.b10));
         smallPics.add(new SmallPic().setName("表情2").setUrl(R.drawable.b11));
         smallPics.add(new SmallPic().setName("表情3").setUrl(R.drawable.b12));
@@ -105,6 +143,9 @@ public class HomeFragment extends Fragment {
         smallPics.add(new SmallPic().setName("右小腿1").setUrl(R.drawable.r1));
         smallPics.add(new SmallPic().setName("右小腿2").setUrl(R.drawable.r3));
         smallPics.add(new SmallPic().setName("右小腿3").setUrl(R.drawable.r2));
+
+
+
     }
 
 

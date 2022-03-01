@@ -3,23 +3,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <include layout="@layout/title_head"
-        />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+        <RelativeLayout
             android:layout_weight="7"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/bt_bj"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:background="#ABAFFB"
+                android:scaleType="fitXY"
+                android:src="@drawable/bj" />
+
+            <ImageButton
+                android:id="@+id/bt_pj"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:background="#ABAFFB"
+                android:scaleType="fitXY"
+                android:src="@drawable/pj" />
+        </RelativeLayout>
         <RelativeLayout
             android:layout_weight="2"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
+                android:scaleType="fitXY"
                 android:id="@+id/iv_change"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
@@ -33,10 +49,104 @@
 
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_weight="6"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <LinearLayout
+                android:background="@drawable/underline_2"
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/tv0"
+                    android:layout_weight="1"
+                    android:background="#00ff00"
+                    android:gravity="center"
+                    android:textColor="#774D4D"
+                    android:textStyle="bold"
+                    android:textSize="40px"
+                    android:text="全部"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/tv1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#774D4D"
+                    android:textStyle="bold"
+                    android:textSize="40px"
+                    android:text="小表情"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/tv2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#774D4D"
+                    android:textStyle="bold"
+                    android:textSize="40px"
+                    android:text="表情"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/tv3"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#774D4D"
+                    android:textStyle="bold"
+                    android:textSize="40px"
+                    android:text="上肢"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                android:id="@+id/tv4"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#774D4D"
+                android:textStyle="bold"
+                android:textSize="40px"
+                android:text="QQ"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/tv5"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#774D4D"
+                    android:textStyle="bold"
+                    android:textSize="40px"
+                    android:text="配件"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/tv6"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#774D4D"
+                    android:textStyle="bold"
+                    android:textSize="40px"
+                    android:text="下肢"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
             <com.example.studyproject.custom.HorizontalListView
+                android:divider="#000000"
+                android:layout_weight="1"
                 android:id="@+id/hor_listview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
