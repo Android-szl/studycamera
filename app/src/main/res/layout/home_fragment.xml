@@ -37,7 +37,7 @@
                     android:layout_height="50dp"
                     android:scaleType="fitXY"
                     android:background="@drawable/bg_cirle"
-                    android:src="@drawable/delete" />
+                    android:src="@drawable/delete"/>
             </LinearLayout>
             <LinearLayout
                 android:gravity="center"

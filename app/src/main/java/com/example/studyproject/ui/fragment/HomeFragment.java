@@ -110,6 +110,20 @@ public class HomeFragment extends Fragment {
                 screenShort();
             }
         });
+        btDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mtivs.size()==0)
+                {
+                    ivChange.setImageDrawable(null);
+                }
+                else
+                {
+                    mtivs.clear();
+                    relative.removeAllViews();
+                }
+            }
+        });
     }
 
     private class zp implements View.OnClickListener {
