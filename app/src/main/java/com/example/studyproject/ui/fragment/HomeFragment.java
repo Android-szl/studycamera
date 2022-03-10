@@ -11,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
@@ -39,9 +38,11 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.example.studyproject.Bean.FLS;
 import com.example.studyproject.Bean.SmallPic;
 import com.example.studyproject.R;
 import com.example.studyproject.adapter.HorListview_Adapter;
+import com.example.studyproject.adapter.category_HorListview_Adapter;
 import com.example.studyproject.custom.HorizontalListView;
 import com.example.studyproject.custom.MultiTouchImageView;
 
@@ -84,6 +85,7 @@ public class HomeFragment extends Fragment {
     private TextView tvLine;
     private TextView tvLine2;
     private RelativeLayout rl;
+    private HorizontalListView horCapegory;
 //    @Override
 //    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 //        super.onViewCreated(view, savedInstanceState);
@@ -104,6 +106,7 @@ public class HomeFragment extends Fragment {
         setHorAdapter(addIma_GQ());
         titleTv.setText("表情包制作");
         Log.d(TAG, "onViewCreated: " + addIma_GQ().size());
+        setFLS();
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,12 +116,9 @@ public class HomeFragment extends Fragment {
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mtivs.size()==0)
-                {
+                if (mtivs.size() == 0) {
                     ivChange.setImageDrawable(null);
-                }
-                else
-                {
+                } else {
                     mtivs.clear();
                     relative.removeAllViews();
                 }
@@ -305,7 +305,7 @@ public class HomeFragment extends Fragment {
         MultiTouchImageView mtiv = new MultiTouchImageView(getActivity());
         mtiv.setScaleType(ImageView.ScaleType.MATRIX);
         mtiv.setLayoutParams(relative.getLayoutParams());
-        int src_w = bitmap.getWidth();
+         int src_w = bitmap.getWidth();
         int src_h = bitmap.getHeight();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int new_w = (int) (displayMetrics.widthPixels * 0.8);
@@ -352,8 +352,7 @@ public class HomeFragment extends Fragment {
         float scale_w = (((float) new_w / src_w));
         float scale_h = (((float) new_h / src_h));
         Matrix matrix = new Matrix();
-        matrix.postScale(scale_w, scale_h);
-        Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, src_w, src_h, matrix, true);
+        matrix.postScale(scale_w,scale_h);
         mtiv.setImageBitmap(bitmap);
         relative.addView(mtiv);
         mtivs.add(mtiv);
@@ -387,8 +386,7 @@ public class HomeFragment extends Fragment {
         Matrix matrix = new Matrix();
         matrix.postScale(scale_w, scale_h);
         Log.d(TAG, "screenShort: " + (+tvLine.getY()) + "iv" + titleTv.getY());
-
-        Bitmap bitmap1 = Bitmap.createBitmap(bitmap, (int) (tvLine.getX()), (int) (tvLine.getY()+tvLine.getY()+35), ivChange.getWidth(), ivChange.getHeight()-35, matrix, true);
+        Bitmap bitmap1 = Bitmap.createBitmap(bitmap, (int) (tvLine.getX()), (int) (tvLine.getY() + tvLine.getY() + 35), ivChange.getWidth(), ivChange.getHeight() - 35, matrix, true);
         if (bitmap != null) {
             try {
                 saveBitmap(bitmap1);
@@ -413,16 +411,6 @@ public class HomeFragment extends Fragment {
 
 
     public void setTV() {
-        tvs.add(tv1);
-        tvs.add(tv2);
-        tvs.add(tv3);
-        tvs.add(tv4);
-        tvs.add(tv5);
-        tvs.add(tv6);
-        tvs.add(tv0);
-        for (int i = 0; i < tvs.size(); i++) {
-            tvs.get(i).setOnClickListener(new dj());
-        }
         btBj.setOnClickListener(new zp());
         btPj.setOnClickListener(new zp());
     }
@@ -518,58 +506,6 @@ public class HomeFragment extends Fragment {
         return smallPics;
     }
 
-    private class dj implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.tv0:
-                    setHorAdapter(smallPics);
-                    select(6);
-                    break;
-                case R.id.tv1:
-                    select(0);
-                    break;
-                case R.id.tv2:
-                    select(1);
-                    break;
-                case R.id.tv3:
-                    select(2);
-                    break;
-                case R.id.tv4:
-                    select(3);
-                    break;
-                case R.id.tv5:
-                    select(4);
-                    break;
-                case R.id.tv6:
-                    select(5);
-                    break;
-            }
-        }
-    }
-
-    public void select(int x) {
-        for (int i = 0; i < tvs.size(); i++) {
-            if (x == i) {
-                tvs.get(i).setBackgroundColor(Color.parseColor("#8ECF8E"));
-            } else {
-                tvs.get(i).setBackgroundColor(Color.parseColor("#00000000"));
-            }
-        }
-        if (x == 6) {
-
-        } else {
-            ArrayList<SmallPic> sms = new ArrayList<>();
-            for (int i = 0; i < smallPics.size(); i++) {
-                if (x == smallPics.get(i).getType()) {
-                    sms.add(smallPics.get(i));
-                }
-            }
-            setHorAdapter(sms);
-        }
-    }
-
     private static final String TAG = "HomeFragment";
 
     public void setHorAdapter(ArrayList<SmallPic> sms) {
@@ -584,19 +520,63 @@ public class HomeFragment extends Fragment {
         horListview.setAdapter(adapter);
     }
 
+    public void setFLS() {
+        ArrayList<FLS> fls1 = new ArrayList<>();
+        fls1.add(new FLS().setName("小表情").setId(0));
+        fls1.add(new FLS().setName("表情").setId(1));
+        fls1.add(new FLS().setName("上肢").setId(2));
+        fls1.add(new FLS().setName("QQ表情").setId(3));
+        fls1.add(new FLS().setName("配件").setId(4));
+        fls1.add(new FLS().setName("下肢").setId(5));
+        fls1.add(new FLS().setName("全部").setId(6));
+        category_HorListview_Adapter adapter = new category_HorListview_Adapter(fls1, getActivity());
+        horCapegory.setAdapter(adapter);
+        horCapegory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                select(fls1.get(position),fls1);
+            }
+        });
+    }
+    public void select(FLS fls,ArrayList<FLS> fls1)
+    {
+        ArrayList<SmallPic> sms = new ArrayList<>();
+        if (fls.getId()==6)
+        {
+            for (int i = 0; i < fls1.size(); i++) {
+                fls1.get(i).setChecked(false);
+                if (6==fls1.get(i).getId())
+                {
+                    fls1.get(i).setChecked(true);
+                }
+            }
+        }
+        else
+        {
+        for (int i = 0; i < smallPics.size(); i++) {
+            if (fls.getId() == smallPics.get(i).getType()) {
+                sms.add(smallPics.get(i));
+            }
+        }
+            for (int i = 0; i < fls1.size(); i++) {
+                fls1.get(i).setChecked(false);
+                if (fls.getId()==fls1.get(i).getId())
+                {
+                    fls1.get(i).setChecked(true);
+                }
+            }
+
+        }
+        horCapegory.setAdapter(new category_HorListview_Adapter(fls1,getActivity()));
+        setHorAdapter(sms);
+    }
+
     private void initView() {
         ivChange = (ImageView) getView().findViewById(R.id.iv_change);
         relative = (RelativeLayout) getView().findViewById(R.id.relative);
         horListview = (HorizontalListView) getView().findViewById(R.id.hor_listview);
         btBj = (ImageButton) getView().findViewById(R.id.bt_bj);
         btPj = (ImageButton) getView().findViewById(R.id.bt_pj);
-        tv1 = (TextView) getView().findViewById(R.id.tv1);
-        tv2 = (TextView) getView().findViewById(R.id.tv2);
-        tv3 = (TextView) getView().findViewById(R.id.tv3);
-        tv4 = (TextView) getView().findViewById(R.id.tv4);
-        tv5 = (TextView) getView().findViewById(R.id.tv5);
-        tv6 = (TextView) getView().findViewById(R.id.tv6);
-        tv0 = (TextView) getView().findViewById(R.id.tv0);
         titleToolbar = (LinearLayout) getView().findViewById(R.id.title_toolbar);
         titleTv = (TextView) getView().findViewById(R.id.title_tv);
         btDelete = (ImageButton) getView().findViewById(R.id.bt_delete);
@@ -604,5 +584,6 @@ public class HomeFragment extends Fragment {
         tvLine = (TextView) getView().findViewById(R.id.tv_line);
         tvLine2 = (TextView) getView().findViewById(R.id.tv_line2);
         rl = (RelativeLayout) getView().findViewById(R.id.rl);
+        horCapegory = (HorizontalListView) getView().findViewById(R.id.hor_capegory);
     }
 }
